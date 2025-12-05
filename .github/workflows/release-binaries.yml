@@ -76,14 +76,14 @@ jobs:
           if [[ "${{ matrix.target }}" == *"musl"* ]]; then
             echo "Skipping strip for musl target"
           else
-            cross run --target ${{ matrix.target }} -- strip target/cross/${{ matrix.target }}/release/${{ env.BINARY_NAME }} || true
+            cross run --target ${{ matrix.target }} -- strip target/${{ matrix.target }}/release/${{ env.BINARY_NAME }} || true
           fi
 
       - name: Create archive
         run: |
-          cd target/cross/${{ matrix.target }}/release
-          tar czf ../../../../c-sharp-analyzer-provider-${{ matrix.os }}-${{ matrix.arch }}.tar.gz ${{ env.BINARY_NAME }}
-          cd ../../../../
+          cd target/${{ matrix.target }}/release
+          tar czf ../../../c-sharp-analyzer-provider-${{ matrix.os }}-${{ matrix.arch }}.tar.gz ${{ env.BINARY_NAME }}
+          cd ../../../
           sha256sum c-sharp-analyzer-provider-${{ matrix.os }}-${{ matrix.arch }}.tar.gz > c-sharp-analyzer-provider-${{ matrix.os }}-${{ matrix.arch }}.tar.gz.sha256
 
       - name: Upload artifact
