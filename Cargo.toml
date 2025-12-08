@@ -41,3 +41,4 @@ quick-xml = "0.38.3"
 
 [build-dependencies]
 tonic-build = "0.13.1"
+dlprotoc = "0.4"

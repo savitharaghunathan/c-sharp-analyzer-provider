@@ -1,4 +1,7 @@
 fn main() {
+    // Download protoc if not available
+    dlprotoc::download_protoc().unwrap();
+    
     tonic_build::configure()
         .out_dir("src/analyzer_service/")
         .build_client(true)
