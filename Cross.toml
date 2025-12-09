@@ -1,27 +1,22 @@
 # Cross configuration for multi-platform builds
 # This file configures the cross tool for building the C# analyzer provider
 # for different architectures and operating systems.
-
+#
+# With the generate-proto feature flag approach, cross-compilation no longer
+# requires protoc since we use pre-generated protobuf files.
 
 [target.x86_64-unknown-linux-gnu]
-# Use a custom image with protoc installed
 image = "ghcr.io/cross-rs/x86_64-unknown-linux-gnu:edge"
-# Note: protoc is automatically downloaded by dlprotoc in build.rs
 
 [target.aarch64-unknown-linux-gnu]
-# Use a custom image with protoc installed
 image = "ghcr.io/cross-rs/aarch64-unknown-linux-gnu:edge"
-# Note: protoc is automatically downloaded by dlprotoc in build.rs
 
 [target.x86_64-pc-windows-gnu]
-# Windows cross-compilation from Linux
 image = "ghcr.io/cross-rs/x86_64-pc-windows-gnu:edge"
-# Note: protoc is automatically downloaded by dlprotoc in build.rs
 
 [target.aarch64-pc-windows-gnullvm]
 # ARM64 Windows support (experimental)
 image = "ghcr.io/cross-rs/aarch64-pc-windows-gnullvm:edge"
-# Note: protoc is automatically downloaded by dlprotoc in build.rs
 
 # Note: macOS targets (darwin) cannot be cross-compiled from Linux runners
 # These will be built on macOS runners directly

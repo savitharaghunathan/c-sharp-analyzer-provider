@@ -43,15 +43,6 @@ jobs:
         run: |
           cargo install cross --git https://github.com/cross-rs/cross
 
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
-
-      - name: Download proto file
-        run: |
-          mkdir -p src/build/proto
-          curl -L -o src/build/proto/provider.proto \
-            https://raw.githubusercontent.com/konveyor/analyzer-lsp/refs/heads/main/provider/internal/grpc/library.proto
-
       - name: Cache cargo dependencies
         uses: actions/cache@v4
         with:
@@ -63,7 +54,6 @@ jobs:
 
       - name: Build with cross
         run: |
-          export PROTOC=$(which protoc)
           cross build --release --target ${{ matrix.target }}
 
       - name: Strip binary
@@ -111,15 +101,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
-
-      - name: Download proto file
-        run: |
-          mkdir -p src/build/proto
-          curl -L -o src/build/proto/provider.proto \
-            https://raw.githubusercontent.com/konveyor/analyzer-lsp/refs/heads/main/provider/internal/grpc/library.proto
 
       - name: Cache cargo dependencies
         uses: actions/cache@v4
@@ -170,16 +151,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
-
-      - name: Download proto file
-        shell: bash
-        run: |
-          mkdir -p src/build/proto
-          curl -L -o src/build/proto/provider.proto \
-            https://raw.githubusercontent.com/konveyor/analyzer-lsp/refs/heads/main/provider/internal/grpc/library.proto
 
       - name: Cache cargo dependencies
         uses: actions/cache@v4

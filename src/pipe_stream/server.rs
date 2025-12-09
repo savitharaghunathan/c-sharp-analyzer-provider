@@ -8,6 +8,7 @@ use tokio::{
     io::{AsyncRead, AsyncWrite},
     net::windows::named_pipe::{NamedPipeServer, PipeMode, ServerOptions},
 };
+use tracing::debug;
 use tonic::transport::server::Connected;
 
 pub struct NamedPipeConnection {
