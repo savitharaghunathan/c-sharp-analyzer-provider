@@ -13,7 +13,7 @@ on:
         type: string
 
 env:
-  BINARY_NAME: c-sharp-analyzer-provider
+  BINARY_NAME: c-sharp-analyzer-provider-cli
   RUST_BACKTRACE: 1
 
 jobs:
@@ -266,7 +266,7 @@ jobs:
             # Use Windows Explorer or PowerShell Expand-Archive
 
             # Run
-            ./c-sharp-analyzer-provider --port 9000 --name c-sharp
+            ./c-sharp-analyzer-provider-cli --port 9000 --name c-sharp
             ```
 
             ### Changes
