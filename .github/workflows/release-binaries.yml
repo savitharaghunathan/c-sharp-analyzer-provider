@@ -15,6 +15,7 @@ on:
         type: string
 
 env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   BINARY_NAME: c-sharp-analyzer-provider-cli
   RUST_BACKTRACE: 1
 
