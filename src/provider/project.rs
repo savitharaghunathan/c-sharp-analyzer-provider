@@ -81,7 +81,8 @@ impl Debug for Project {
 pub struct Tools {
     pub ilspy_cmd: PathBuf,
     pub paket_cmd: PathBuf,
-    pub dotnet_install_cmd: PathBuf,
+    /// Optional path to dotnet-install script. Only needed for modern .NET SDK installation.
+    pub dotnet_install_cmd: Option<PathBuf>,
 }
 
 impl Project {
@@ -163,6 +164,7 @@ impl Project {
                         return Err(anyhow!("not valid paket_cmd"));
                     }
                 };
+                // dotnet_install_cmd is optional - only needed for modern .NET SDK installation
                 let dotnet_install_cmd = match specific_provider_config
                     .fields
                     .get(Self::DOTNET_INSTALL_CMD_LOC_KEY)
@@ -172,25 +174,25 @@ impl Project {
                     }) => {
                         let p = PathBuf::from_str(s)?;
                         if p.exists() {
-                            p
+                            Some(p)
                         } else {
-                            return Err(anyhow!("not valid dotnet_install_cmd"));
+                            tracing::warn!("dotnet_install_cmd path does not exist: {}", s);
+                            None
                         }
                     }
                     None => {
                         let default_path = PathBuf::from(Self::DOTNET_INSTALL_SCRIPT);
                         if default_path.exists() {
-                            default_path
+                            Some(default_path)
                         } else {
-                            return Err(anyhow!(
-                                "dotnet-install script not found at {}",
+                            tracing::info!(
+                                "dotnet-install script not found at {} (optional for source-only analysis)",
                                 Self::DOTNET_INSTALL_SCRIPT
-                            ));
+                            );
+                            None
                         }
                     }
-                    _ => {
-                        return Err(anyhow!("not valid dotnet_install_cmd"));
-                    }
+                    _ => None,
                 };
                 Ok(Tools {
                     ilspy_cmd,
@@ -201,12 +203,13 @@ impl Project {
             None => {
                 let default_path = PathBuf::from(Self::DOTNET_INSTALL_SCRIPT);
                 let dotnet_install_cmd = if default_path.exists() {
-                    default_path
+                    Some(default_path)
                 } else {
-                    return Err(anyhow!(
-                        "dotnet-install script not found at {}",
+                    tracing::info!(
+                        "dotnet-install script not found at {} (optional for source-only analysis)",
                         Self::DOTNET_INSTALL_SCRIPT
-                    ));
+                    );
+                    None
                 };
                 Ok(Tools {
                     ilspy_cmd: which(Self::ILSPY_CMD)?,
